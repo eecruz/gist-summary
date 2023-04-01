@@ -8,27 +8,33 @@ import retrofit2.http.Body
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
 interface ApiInterface
 {
     @POST("extractive/summarize-url/")
     @Headers("Accept:application/json", "Content-Type:application/json",
-             "Authorization: Bearer d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb")
+        "X-RapidAPI-Key:d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb",
+        "X-RapidAPI-Host:tldrthis.p.rapidapi.com")
     fun generateUrlSummary(@Body params: SummarySpecs) : Call<TextSummary>
 
     @POST("abstractive/summarize-url/")
     @Headers("Accept:application/json", "Content-Type:application/json",
-        "Authorization: Bearer d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb")
+        "X-RapidAPI-Key:d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb",
+        "X-RapidAPI-Host:tldrthis.p.rapidapi.com")
     fun generateHumanUrlSummary(@Body params: SummarySpecs) : Call<TextSummary>
 
     @POST("extractive/summarize-text/")
     @Headers("Accept:application/json", "Content-Type:application/json",
-        "Authorization: Bearer d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb")
+        "X-RapidAPI-Key:d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb",
+        "X-RapidAPI-Host:tldrthis.p.rapidapi.com")
     fun generateTextSummary(@Body params: SummarySpecs) : Call<TextSummary>
 
     @POST("abstractive/summarize-text/")
     @Headers("Accept:application/json", "Content-Type:application/json",
-        "Authorization: Bearer d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb")
+        "X-RapidAPI-Key:d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb",
+        "X-RapidAPI-Host:tldrthis.p.rapidapi.com")
     fun generateHumanTextSummary(@Body params: SummarySpecs) : Call<TextSummary>
 
 
@@ -39,9 +45,15 @@ interface ApiInterface
 
         fun create(): ApiInterface
         {
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            val client = OkHttpClient.Builder()
+            client.addInterceptor(logging)
+
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
+                .client(client.build())
                 .build()
 
             return retrofit.create(ApiInterface::class.java)

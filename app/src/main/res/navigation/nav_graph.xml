@@ -18,5 +18,10 @@
         android:id="@+id/detailFragment"
         android:name="edu.quinnipiac.ser210.gistsummary.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+
+    <argument
+        android:name="summary"
+        app:argType="string" />
+    </fragment>
 </navigation>
