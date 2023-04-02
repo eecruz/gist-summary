@@ -4,15 +4,13 @@ import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Headers
-import retrofit2.http.POST
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.http.*
 
 interface ApiInterface
 {
+    /*
     @POST("extractive/summarize-url/")
     @Headers("Accept:application/json", "Content-Type:application/json",
         "X-RapidAPI-Key:d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb",
@@ -37,11 +35,16 @@ interface ApiInterface
         "X-RapidAPI-Host:tldrthis.p.rapidapi.com")
     fun generateHumanTextSummary(@Body params: SummarySpecs) : Call<TextSummary>
 
-
+*/
+    @Headers("Accept:application/json", "Content-Type:application/json",
+        "X-RapidAPI-Key:d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb",
+        "X-RapidAPI-Host:tldr-text-analysis.p.rapidapi.com")
+    @GET("summarize/")
+    fun generateSummary(@Query("text") text: String, @Query("max_sentences") max_sentences: Int) : Call<TextSummary>
 
     companion object
     {
-        var BASE_URL = "https://tldrthis.p.rapidapi.com/v1/model/"
+        var BASE_URL = "https://tldr-text-analysis.p.rapidapi.com/"
 
         fun create(): ApiInterface
         {

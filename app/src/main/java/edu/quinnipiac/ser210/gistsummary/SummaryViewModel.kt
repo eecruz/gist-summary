@@ -7,33 +7,40 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SummaryViewModel: ViewModel() {
-    var createSummarySpecsLiveData: MutableLiveData<TextSummary?> = MutableLiveData()
-    var textSummary: TextSummary? = null
+    var createSummaryLiveData: MutableLiveData<TextSummary?> = MutableLiveData()
+    var textSummary: TextSummary = TextSummary("")
 
     fun getCreateTextSummaryObserver(): MutableLiveData<TextSummary?> {
-        return createSummarySpecsLiveData
+        return createSummaryLiveData
     }
 
-    fun createSummary(specs: SummarySpecs, isUrl: Boolean) {
+    fun setLiveData()
+    {
+        createSummaryLiveData.value = textSummary
+    }
+
+    fun getSummary(): String
+    {
+        return textSummary.summary.toString()
+    }
+
+    fun createSummary(text: String) {
         val retroService = ApiInterface.create()
 
-        val call = if (isUrl) {
-            retroService.generateUrlSummary(specs)
-        } else {
-            retroService.generateTextSummary(specs)
-        }
+        val call = retroService.generateSummary(text, 6)
 
         call.enqueue(object : Callback<TextSummary> {
             override fun onFailure(call: Call<TextSummary>, t: Throwable) {
-                createSummarySpecsLiveData.postValue(null)
+                createSummaryLiveData.postValue(null)
             }
 
             override fun onResponse(call: Call<TextSummary>, response: Response<TextSummary>) {
                 if (response.isSuccessful) {
                     textSummary = response.body() as TextSummary
-                    createSummarySpecsLiveData.postValue(textSummary)
+                    createSummaryLiveData.postValue(textSummary)
+
                 } else {
-                    createSummarySpecsLiveData.postValue(null)
+                    createSummaryLiveData.postValue(null)
                 }
             }
         })

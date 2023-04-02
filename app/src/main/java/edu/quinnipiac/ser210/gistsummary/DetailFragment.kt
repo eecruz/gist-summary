@@ -7,10 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 
 class DetailFragment : Fragment()
 {
-    lateinit var textSummary: String
+    lateinit var viewModel: SummaryViewModel
+    lateinit var input: String
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -21,17 +25,46 @@ class DetailFragment : Fragment()
             return
         }
 
-        textSummary = DetailFragmentArgs.fromBundle(bundle).summary
+        input = DetailFragmentArgs.fromBundle(bundle).inputText
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
+        initViewModel()
+        createTextSummary()
+
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_detail, container, false)
+        return inflater.inflate(R.layout.fragment_detail, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val summaryView = view.findViewById<TextView>(R.id.summaryView)
-        summaryView?.text = textSummary
+        viewModel.setLiveData()
+        summaryView.text = viewModel.getSummary()
 
-        return view
+        viewModel.getCreateTextSummaryObserver().observe(viewLifecycleOwner) { newValue ->
+            summaryView.text = newValue?.summary.toString()
+        }
+    }
+
+    private fun createTextSummary()
+    {
+        viewModel.createSummary(input)
+    }
+
+    private fun initViewModel()
+    {
+        viewModel = ViewModelProvider(this).get(SummaryViewModel::class.java)
+        viewModel.getCreateTextSummaryObserver().observe(viewLifecycleOwner, Observer<TextSummary?> {
+            if(it != null)
+            {
+                Toast.makeText(requireActivity(), "SUCCESSFUL!", Toast.LENGTH_LONG).show()
+            }
+            else
+            {
+                Toast.makeText(requireActivity(), "FAILURE! CHECK ERROR", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 }

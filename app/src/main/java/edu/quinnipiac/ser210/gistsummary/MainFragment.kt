@@ -25,43 +25,16 @@ class MainFragment : Fragment()
         val buttonText = view.findViewById<Button>(R.id.buttonText)
         textInput = view.findViewById(R.id.textInput)
 
-        initViewModel()
-
         buttonUrl.setOnClickListener{
-            createTextSummary(true)
-            val summary: String = viewModel.textSummary?.summary?.get(0).toString()
-            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(summary)
+            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(textInput.text.toString())
             view.findNavController().navigate(action)
         }
 
         buttonText.setOnClickListener{
-            createTextSummary(false)
-            val summary: String = viewModel.textSummary?.summary?.get(0).toString()
-            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(summary)
+            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(textInput.text.toString())
             view.findNavController().navigate(action)
         }
 
         return view
-    }
-
-    private fun createTextSummary(isUrl: Boolean)
-    {
-        val specs = SummarySpecs(textInput.text.toString(), 10, true)
-        viewModel.createSummary(specs, isUrl)
-    }
-
-    private fun initViewModel()
-    {
-        viewModel = ViewModelProvider(this).get(SummaryViewModel::class.java)
-        viewModel.getCreateTextSummaryObserver().observe(viewLifecycleOwner, Observer<TextSummary?> {
-            if(it != null)
-            {
-                Toast.makeText(requireActivity(), "SUCCESSFUL!", Toast.LENGTH_LONG).show()
-            }
-            else
-            {
-                Toast.makeText(requireActivity(), "FAILURE! CHECK ERROR", Toast.LENGTH_LONG).show()
-            }
-        })
     }
 }
