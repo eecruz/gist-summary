@@ -14,7 +14,6 @@ import androidx.navigation.findNavController
 
 class MainFragment : Fragment()
 {
-    lateinit var viewModel: SummaryViewModel
     lateinit var textInput: EditText
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
