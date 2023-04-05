@@ -1,4 +1,5 @@
 # SER210 "Gist" Summary App
+<img src="https://github.com/eecruz/gist-summary/blob/master/app/src/main/res/drawable/gist_logo.PNG" width=40% height=40%>
 
 ## What is this?
 This is an android application created for Quinnipiac's SER210 Android Development class.
