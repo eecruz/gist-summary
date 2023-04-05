@@ -1,3 +1,8 @@
+/** Assignment: Assignment 3
+ *  @author: Emilio Cruz and Glenn Buyce
+ *  @date: 4/4/23
+ */
+
 package edu.quinnipiac.ser210.gistsummary
 
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +15,7 @@ class SummaryViewModel: ViewModel() {
     var createSummaryLiveData: MutableLiveData<TextSummary?> = MutableLiveData()
     var textSummary: TextSummary = TextSummary("(generating summary...)")
 
+    // live data representation for summary value
     fun getCreateTextSummaryObserver(): MutableLiveData<TextSummary?> {
         return createSummaryLiveData
     }
@@ -19,16 +25,19 @@ class SummaryViewModel: ViewModel() {
         createSummaryLiveData.value = textSummary
     }
 
+    // gets summary from data class
     fun getSummary(): String
     {
         return textSummary.summary.toString()
     }
 
+    // calls API to generate summary from user's input text
     fun createSummary(text: String) {
         val retroService = ApiInterface.create()
 
         val call = retroService.generateSummary(text, 6)
 
+        // handles API call on concurrent thread so as not to slow down UI
         call.enqueue(object : Callback<TextSummary> {
             override fun onFailure(call: Call<TextSummary>, t: Throwable) {
                 createSummaryLiveData.postValue(null)

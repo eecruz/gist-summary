@@ -1,3 +1,8 @@
+/** Assignment: Assignment 3
+ *  @author: Emilio Cruz and Glenn Buyce
+ *  @date: 4/4/23
+ */
+
 package edu.quinnipiac.ser210.gistsummary
 
 import org.w3c.dom.Text
@@ -36,6 +41,7 @@ interface ApiInterface
     fun generateHumanTextSummary(@Body params: SummarySpecs) : Call<TextSummary>
 
 */
+    // retrieves summary from API
     @Headers("Accept:application/json", "Content-Type:application/json",
         "X-RapidAPI-Key:d859bd9d8emsh7665e099afce6e3p13227djsnf07373f301cb",
         "X-RapidAPI-Host:tldr-text-analysis.p.rapidapi.com")
@@ -48,11 +54,13 @@ interface ApiInterface
 
         fun create(): ApiInterface
         {
+            // adds api fetch to logcat
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
             val client = OkHttpClient.Builder()
             client.addInterceptor(logging)
 
+            // builds retrofit
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)

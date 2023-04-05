@@ -1,3 +1,8 @@
+/** Assignment: Assignment 3
+ *  @author: Emilio Cruz and Glenn Buyce
+ *  @date: 4/4/23
+ */
+
 package edu.quinnipiac.ser210.gistsummary
 
 import android.os.Bundle
@@ -10,11 +15,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import edu.quinnipiac.ser210.gistsummary.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment()
 {
     lateinit var viewModel: SummaryViewModel
     lateinit var input: String
+
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -33,18 +42,18 @@ class DetailFragment : Fragment()
         initViewModel()
         createTextSummary()
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val summaryView = view.findViewById<TextView>(R.id.summaryView)
         viewModel.setLiveData()
-        summaryView.text = viewModel.getSummary()
+        _binding!!.summaryView.text = viewModel.getSummary()
 
+        // updates textview when summary is received from API
         viewModel.getCreateTextSummaryObserver().observe(viewLifecycleOwner) { newValue ->
-            summaryView.text = newValue?.summary.toString()
+            _binding!!.summaryView.text = newValue?.summary.toString()
         }
     }
 
@@ -55,16 +64,17 @@ class DetailFragment : Fragment()
 
     private fun initViewModel()
     {
+        // preps data model class and sets observer for summary text view
         viewModel = ViewModelProvider(this).get(SummaryViewModel::class.java)
         viewModel.getCreateTextSummaryObserver().observe(viewLifecycleOwner, Observer<TextSummary?> {
-            if(it != null)
-            {
-                Toast.makeText(requireActivity(), "SUCCESSFUL!", Toast.LENGTH_LONG).show()
-            }
-            else
-            {
-                Toast.makeText(requireActivity(), "FAILURE! CHECK ERROR", Toast.LENGTH_LONG).show()
-            }
+            if(it == null)
+                Toast.makeText(requireActivity(), "An unknown error has occurred", Toast.LENGTH_LONG).show()
         })
+    }
+
+    override fun onDestroyView()
+    {
+        super.onDestroyView()
+        _binding = null
     }
 }

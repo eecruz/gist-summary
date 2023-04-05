@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">GistSummary</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="generate">(generating summary...)</string>
+    <string name="help">To use this app first either enter text directly or paste a valid url into the text box and then choose the corresponding button.
+        If it is a url select the URL button, and if it is text then select the Text button.
+        Select the button in the top right to share the summary that is created.
+        Select the Settings button on the bottom left to change the background color of the app.
+        Enjoy! </string>
+    <string name="settings_text">Press the button to change the background color of the app.</string>
 </resources>

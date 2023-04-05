@@ -17,12 +17,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:gravity="center_horizontal"
-            android:text="GIST"
+            android:text="WELCOME TO"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/gist_logo"
+            app:layout_constraintBottom_toTopOf="@+id/textInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gistLabel"
+            app:layout_constraintVertical_bias="0.612" />
 
         <EditText
             android:id="@+id/textInput"
